@@ -1,0 +1,23 @@
+[workspace.package]
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+homepage = "https://reef.top/"
+description = "Reef Core library in Rust"
+repository = "https://github.com/zzispp/reef-core-api"
+documentation = "https://github.com/zzispp"
+
+
+[workspace]
+resolver = "2"
+members = ["apps/wallet_api", "crates/reef_tracing", "crates/settings"]
+
+default-members = ["apps/wallet_api"]
+
+
+[workspace.dependencies]
+tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
+serde = { version = "1.0.219", features = ["derive"] }
+config = { version = "0.15.14", features = ["yaml"] }
+strum = { version = "0.27.2", features = ["derive"] }
+strum_macros = "0.27.2"

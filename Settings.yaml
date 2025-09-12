@@ -1,0 +1,233 @@
+redis:
+  url: "redis://default:@localhost:6379?protocol=resp3"
+postgres:
+  url: "postgres://username:password@localhost/api"
+pricer:
+  timer: 60
+  outdated: 604800
+charter:
+  timer: 60
+name:
+  ens:
+    url: "https://eth.llamarpc.com"
+  ud:
+    url: "https://api.unstoppabledomains.com"
+    key:
+      secret: ""
+  sns:
+    url: "https://sns-sdk-proxy.bonfida.workers.dev"
+  ton:
+    url: "https://toncenter.com"
+  eths:
+    url: "https://api.eths.center"
+  spaceid:
+    url: "https://api.prd.space.id"
+  did:
+    url: "https://indexer-basic.did.id"
+  suins:
+    url: "https://suins-rpc.mainnet.sui.io"
+  aptos:
+    url: "https://aptosnames.com"
+  injective:
+    url: "https://injective-rest.publicnode.com"
+  icns:
+    url: "https://osmosis-rest.publicnode.com"
+  lens:
+    url: "https://api-v2.lens.dev"
+  base:
+    url: "https://mainnet.base.org"
+  hyperliquid:
+    url: "https://rpc.hyperliquid.xyz/evm"
+  alldomains:
+    url: "https://api.mainnet-beta.solana.com"
+
+metrics:
+  path: /metrics
+chains:
+  solana:
+    url: "https://api.mainnet-beta.solana.com"
+  ethereum:
+    url: "https://ethereum-rpc.publicnode.com"
+    archive_url: "https://eth-pokt.nodies.app"
+  smartchain:
+    url: "https://bsc-dataseed1.bnbchain.org"
+  polygon:
+    url: "https://polygon.llamarpc.com"
+  optimism:
+    url: "https://mainnet.optimism.io"
+  arbitrum:
+    url: "https://arb1.arbitrum.io/rpc"
+  base:
+    url: "https://base-public.nodies.app"
+  opbnb:
+    url: "https://opbnb-mainnet-rpc.bnbchain.org"
+  avalanchec:
+    url: "https://api.avax.network/ext/bc/C/rpc"
+  fantom:
+    url: "https://fantom.publicnode.com"
+  gnosis:
+    url: "https://gnosis.publicnode.com"
+  ton:
+    url: "https://toncenter.com"
+  cosmos:
+    url: "https://cosmos-rest.publicnode.com"
+  osmosis:
+    url: "https://osmosis-rest.publicnode.com"
+  thorchain:
+    url: "https://thornode.ninerealms.com"
+  tron:
+    url: "https://api.trongrid.io"
+  xrp:
+    url: "https://s1.ripple.com:51234/"
+  aptos:
+    url: "https://fullnode.mainnet.aptoslabs.com"
+  sui:
+    url: "https://suins-rpc.mainnet.sui.io"
+  celestia:
+    url: "https://celestia-rest.publicnode.com"
+  injective:
+    url: "https://injective-rest.publicnode.com"
+  sei:
+    url: "https://sei-api.polkachu.com"
+  manta:
+    url: "https://pacific-rpc.manta.network/http"
+  blast:
+    url: "https://rpc.blastblockchain.com"
+  noble:
+    url: "https://rest.cosmos.directory/noble"
+  zksync:
+    url: "https://mainnet.era.zksync.io"
+  linea:
+    url: "https://linea.drpc.org"
+  mantle:
+    url: "https://rpc.mantle.xyz"
+  celo:
+    url: "https://forno.celo.org"
+  near:
+    url: "https://rpc.mainnet.fastnear.com"
+  bitcoin:
+    url: https://blockbook.btc.zelcore.io
+  bitcoincash:
+    url: https://blockbook.bch.zelcore.io
+  litecoin:
+    url: https://blockbook.ltc.zelcore.io
+  doge:
+    url: https://blockbook.doge.zelcore.io
+  world:
+    url: https://worldchain-mainnet.gateway.tenderly.co
+  stellar:
+    url: https://horizon.stellar.org
+  sonic:
+    url: https://rpc.soniclabs.com
+  algorand:
+    url: https://mainnet-idx.algonode.cloud
+  polkadot:
+    url: https://polkadot-public-sidecar.parity-chains.parity.io
+  cardano:
+    url: ""
+  abstract:
+    url: https://api.mainnet.abs.xyz
+  berachain:
+    url: https://rpc.berachain.com
+  ink:
+    url: https://rpc-qnd.inkonchain.com
+  unichain:
+    url: https://mainnet.unichain.org
+  hyperliquid:
+    url: https://rpc.hyperliquid.xyz/evm
+  hypercore:
+    url: https://api.hyperliquid.xyz
+  monad:
+    url: https://testnet-rpc.monad.xyz #TODO: Monad
+
+swap:
+  jupiter:
+    url: "https://quote-api.jup.ag"
+    key: ""
+    fee:
+      percent: 0
+      address: ""
+  thorchain:
+    url: "https://thornode.ninerealms.com"
+    key: ""
+    fee:
+      percent: 0
+      address: ""
+  aftermath:
+    url: "https://aftermath.finance/api"
+    key: ""
+    fee:
+      percent: 0
+      address: ""
+scan:
+  timeout_ms: 1200 # ms
+  goplus:
+    url: "https://api.gopluslabs.io"
+    key:
+      public: ""
+      secret: ""
+  hashdit:
+    url: "https://api.hashdit.io"
+    key:
+      public: ""
+      secret: ""
+
+parser:
+  timeout: 1000
+
+pusher:
+  url: "http://localhost:8088"
+  ios:
+    topic: ""
+
+daemon:
+  service: ""
+  search:
+    assets_update_interval: 1800
+
+api:
+  service: ""
+
+alerter:
+  update_interval_seconds: 60
+  rules:
+    price_increase_percent: 8.0
+    price_decrease_percent: 10.0
+
+alchemy:
+  key:
+    secret: ""
+
+ankr:
+  key:
+    secret: ""
+
+trongrid:
+  key:
+    secret: ""
+
+assets:
+  url: "https://raw.githubusercontent.com/gemwalletcom/assets/refs/heads/master"
+
+nft:
+  nftscan:
+    key:
+      secret: ""
+  opensea:
+    key:
+      secret: ""
+  magiceden:
+    key:
+      secret: ""
+  bucket:
+    endpoint: ""
+    region: auto
+    name: "nft-assets"
+    url: "https://nft-assets.gemwallet.com"
+    key:
+      public: ""
+      secret: ""
+
+sentry:
+  dsn: ""
+  sample_rate: 1.0
