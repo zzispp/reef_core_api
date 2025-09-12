@@ -6,6 +6,8 @@ use config::{Config, ConfigError, Environment, File};
 #[derive(Debug, Deserialize, Clone)]
 #[allow(unused)]
 pub struct Settings {
+    pub server: Server,
+    pub log: Log,
     pub redis: Database,
     pub postgres: Database,
 
@@ -29,6 +31,21 @@ pub struct Settings {
     pub assets: Assets,
     pub sentry: Option<Sentry>,
 }
+
+#[derive(Debug, Deserialize, Clone)]
+#[allow(unused)]
+pub struct Server {
+    pub address: String,
+    pub port: u16,
+    pub rocket_log_color: bool,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+#[allow(unused)]
+pub struct Log {
+    pub level: String,
+}
+
 
 #[derive(Debug, Deserialize, Clone)]
 #[allow(unused)]

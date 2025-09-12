@@ -6,13 +6,26 @@ pub struct SentryTracing {
 
 impl SentryTracing {
     pub fn init(settings: &Settings, service: &str) -> Self {
-        tracing_subscriber::fmt().with_target(false).init();
-        
+        tracing_subscriber::fmt()
+            .with_target(false)
+            .with_max_level(
+                settings
+                    .log
+                    .level
+                    .parse::<tracing::Level>()
+                    .expect("Failed to parse log level"),
+            )
+            .init();
+
         Self { _guard: None }
     }
 }
 
-pub fn error_with_context<E: std::error::Error + ?Sized>(message: &str, error: &E, context: &[(&str, &str)]) {
+pub fn error_with_context<E: std::error::Error + ?Sized>(
+    message: &str,
+    error: &E,
+    context: &[(&str, &str)],
+) {
     tracing::error!("{}: {}", message, error);
 }
 
@@ -53,7 +66,6 @@ macro_rules! warn_ctx {
         }
     };
 }
-
 
 pub fn error<E: std::error::Error + ?Sized>(message: &str, error: &E) {
     tracing::error!("{}: {}", message, error);

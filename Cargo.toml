@@ -18,6 +18,8 @@ default-members = ["apps/wallet_api"]
 [workspace.dependencies]
 tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
 serde = { version = "1.0.219", features = ["derive"] }
+serde_json = { version = "1.0.143", features = ["preserve_order"] }
 config = { version = "0.15.14", features = ["yaml"] }
 strum = { version = "0.27.2", features = ["derive"] }
 strum_macros = "0.27.2"
+rocket = { version = "0.5.1", features = ["json"] }
