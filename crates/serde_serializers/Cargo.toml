@@ -1,0 +1,10 @@
+[package]
+name = "serde_serializers"
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+description = "Serde serialization utilities"
+
+[dependencies]
+serde = { workspace = true }
+num-bigint = { workspace = true }

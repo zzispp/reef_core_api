@@ -1,35 +1,49 @@
-use crate::AssetId;
+use crate::Chain;
 use num_bigint::BigUint;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct AssetBalance {
-    pub asset_id: AssetId,
+    pub chain: Chain,
+    pub contract_address: Option<String>,
     pub balance: Balance,
     pub is_active: Option<bool>,
 }
 
 impl AssetBalance {
-    pub fn new(asset_id: AssetId, balance: BigUint, decimals: u8) -> Self {
+    pub fn new(
+        chain: Chain,
+        contract_address: Option<String>,
+        balance: BigUint,
+        decimals: u8,
+    ) -> Self {
         Self {
-            asset_id,
+            chain,
+            contract_address,
             balance: Balance::coin_balance(balance, decimals),
             is_active: None,
         }
     }
 
-    pub fn new_balance(asset_id: AssetId, balance: Balance) -> Self {
+    pub fn new_balance(chain: Chain, contract_address: Option<String>, balance: Balance) -> Self {
         Self {
-            asset_id,
+            chain,
+            contract_address,
             balance,
             is_active: None,
         }
     }
 
-    pub fn new_token(asset_id: AssetId, amount: BigUint, decimals: u8) -> Self {
+    pub fn new_token(
+        chain: Chain,
+        contract_address: Option<String>,
+        amount: BigUint,
+        decimals: u8,
+    ) -> Self {
         Self {
-            asset_id,
+            chain,
+            contract_address,
             balance: Balance::token_balance(amount, decimals),
             is_active: Some(true),
         }

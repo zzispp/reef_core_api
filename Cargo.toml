@@ -20,6 +20,7 @@ members = [
     "crates/settings_chain",
     "crates/reef_client",
     "crates/reef_jsonrpc",
+    "crates/serde_serializers",
 ]
 
 default-members = ["apps/wallet_api"]
@@ -44,3 +45,6 @@ futures = "0.3.30"
 base64 = "0.22.1"
 hex = "0.4.3"
 tracing = "0.1"
+borsh = { version = "1.5.7", features = ["derive"] }
+sha2 = { version = "0.10.9" }
+curve25519-dalek = { version = "4.1.3" }

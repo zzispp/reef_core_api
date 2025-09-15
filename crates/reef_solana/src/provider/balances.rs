@@ -2,15 +2,16 @@ use std::error::Error;
 
 use async_trait::async_trait;
 use primitives::ChainBalances;
-use primitives::{AssetBalance, AssetId, Balance, Chain};
+use primitives::{AssetBalance, Balance, Chain};
 use tracing::{error, warn};
 
-use crate::models::TokenAccountInfo;
+use crate::models::TokenAccountInfoStruct;
 use crate::rpc::client::SolanaClient;
 
 fn map_sol_balance(lamports: u64) -> AssetBalance {
     AssetBalance {
-        asset_id: AssetId::native(Chain::Solana),
+        chain: Chain::Solana,
+        contract_address: None,
         balance: Balance::coin_balance(num_bigint::BigUint::from(lamports), 9), // SOL has 9 decimals
         is_active: Some(true),
     }
@@ -18,7 +19,8 @@ fn map_sol_balance(lamports: u64) -> AssetBalance {
 
 fn map_token_balance(amount: u64, mint: String, decimals: u8) -> AssetBalance {
     AssetBalance::new_token(
-        AssetId::token(Chain::Solana, &mint),
+        Chain::Solana,
+        Some(mint),
         num_bigint::BigUint::from(amount),
         decimals,
     )
@@ -26,7 +28,7 @@ fn map_token_balance(amount: u64, mint: String, decimals: u8) -> AssetBalance {
 
 /// 从代币账户信息解析余额
 fn parse_token_account_balance(
-    account_info: &TokenAccountInfo,
+    account_info: &TokenAccountInfoStruct,
 ) -> Result<(String, u64, u8), Box<dyn Error + Send + Sync>> {
     let amount = account_info
         .account
@@ -154,8 +156,8 @@ mod tests {
 
         let result = map_sol_balance(lamports);
 
-        assert_eq!(result.asset_id.chain, Chain::Solana);
-        assert_eq!(result.asset_id.token_address, None);
+        assert_eq!(result.chain, Chain::Solana);
+        assert_eq!(result.contract_address, None);
         assert_eq!(result.is_active, Some(true));
         assert_eq!(result.balance.amount, lamports.to_string());
         assert_eq!(result.balance.decimals, 9);
@@ -168,7 +170,7 @@ mod tests {
 
         let result = map_sol_balance(lamports);
 
-        assert_eq!(result.asset_id.chain, Chain::Solana);
+        assert_eq!(result.chain, Chain::Solana);
         assert_eq!(result.balance.amount, "0");
         assert_eq!(result.balance.decimals, 9);
         assert_eq!(result.balance.ui_amount, Some(0.0));
@@ -182,8 +184,8 @@ mod tests {
 
         let result = map_token_balance(amount, mint.clone(), decimals);
 
-        assert_eq!(result.asset_id.chain, Chain::Solana);
-        assert_eq!(result.asset_id.token_address, Some(mint));
+        assert_eq!(result.chain, Chain::Solana);
+        assert_eq!(result.contract_address, Some(mint));
         assert_eq!(result.is_active, Some(true));
         assert_eq!(result.balance.amount, amount.to_string());
         assert_eq!(result.balance.decimals, decimals);
@@ -198,8 +200,8 @@ mod tests {
 
         let result = map_token_balance(amount, mint.clone(), decimals);
 
-        assert_eq!(result.asset_id.chain, Chain::Solana);
-        assert_eq!(result.asset_id.token_address, Some(mint));
+        assert_eq!(result.chain, Chain::Solana);
+        assert_eq!(result.contract_address, Some(mint));
         assert_eq!(result.balance.amount, "0");
         assert_eq!(result.balance.decimals, decimals);
         assert_eq!(result.balance.ui_amount, Some(0.0));

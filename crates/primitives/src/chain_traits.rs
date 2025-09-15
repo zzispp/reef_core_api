@@ -37,7 +37,7 @@ pub trait ChainBalances: Send + Sync {
 
 #[async_trait]
 pub trait ChainTransactions: Send + Sync {
-    async fn transaction_broadcast(
+   /*  async fn transaction_broadcast(
         &self,
         data: String,
         options: BroadcastOptions,
@@ -52,13 +52,13 @@ pub trait ChainTransactions: Send + Sync {
         _limit: Option<usize>,
     ) -> Result<Vec<Transaction>, Box<dyn Error + Sync + Send>> {
         Ok(vec![])
-    }
+    } */
 }
 
 #[async_trait]
 pub trait ChainState: Send + Sync {
-    async fn get_chain_id(&self) -> Result<String, Box<dyn Error + Sync + Send>>;
-    async fn get_block_latest_number(&self) -> Result<u64, Box<dyn Error + Sync + Send>>;
+    // async fn get_chain_id(&self) -> Result<String, Box<dyn Error + Sync + Send>>;
+    // async fn get_block_latest_number(&self) -> Result<u64, Box<dyn Error + Sync + Send>>;
 }
 
 #[async_trait]

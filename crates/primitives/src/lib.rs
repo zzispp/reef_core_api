@@ -7,8 +7,8 @@ pub use self::chain_address::ChainAddress;
 pub mod asset_balance;
 pub use self::asset_balance::{AssetBalance, Balance};
 
-pub mod asset_id;
-pub use self::asset_id::{AssetId, AssetIdVecExt};
+// pub mod asset_id;
+// pub use self::asset_id::{AssetId, AssetIdVecExt};
 
 pub mod asset_type;
 pub use self::asset_type::{AssetSubtype, AssetType};

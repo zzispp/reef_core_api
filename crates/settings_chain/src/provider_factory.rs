@@ -49,7 +49,7 @@ impl ProviderFactory {
         config: ProviderConfig,
     ) -> Result<Box<dyn ChainTraits>, Box<dyn std::error::Error + Send + Sync>> {
         match config.chain {
-            Chain::Ethereum | Chain::BinanceSmartChain | Chain::Polygon => {
+            Chain::Ethereum | Chain::SmartChain | Chain::Polygon => {
                 let evm_chain = EVMChain::from_chain(config.chain).unwrap();
                 let client = EthereumClient::new(config.url, evm_chain);
                 Ok(Box::new(client))
@@ -64,7 +64,7 @@ impl ProviderFactory {
     pub fn url(chain: Chain, settings: &Settings) -> ChainURLType {
         match chain {
             Chain::Ethereum => settings.chains.ethereum.get_type(),
-            Chain::BinanceSmartChain => settings.chains.smartchain.get_type(),
+            Chain::SmartChain => settings.chains.smartchain.get_type(),
             Chain::Polygon => settings.chains.polygon.get_type(),
             Chain::Solana => settings.chains.solana.get_type(),
         }

@@ -22,6 +22,7 @@ async fn create_app(settings: Settings) -> std::io::Result<()> {
             .wrap(Logger::default())
             .service(status::get_status)
             .service(chain::balance::get_balances)
+            .service(chain::token::get_token)
     })
     .bind(&bind_address)?
     .run()

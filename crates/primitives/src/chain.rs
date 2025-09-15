@@ -26,7 +26,7 @@ use typeshare::typeshare;
 pub enum Chain {
     Solana,
     Ethereum,
-    BinanceSmartChain,
+    SmartChain,
     Polygon,
 }
 
@@ -46,7 +46,7 @@ impl Chain {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, EnumIter)]
 pub enum EVMChain {
     Ethereum,
-    BinanceSmartChain,
+    SmartChain,
     Polygon,
 }
 
@@ -54,7 +54,7 @@ impl EVMChain {
     pub fn from_chain(chain: Chain) -> Option<Self> {
         match chain {
             Chain::Ethereum => Some(Self::Ethereum),
-            Chain::BinanceSmartChain => Some(Self::BinanceSmartChain),
+            Chain::SmartChain => Some(Self::SmartChain),
             Chain::Polygon => Some(Self::Polygon),
             _ => None,
         }
@@ -63,7 +63,7 @@ impl EVMChain {
     pub fn to_chain(self) -> Chain {
         match self {
             Self::Ethereum => Chain::Ethereum,
-            Self::BinanceSmartChain => Chain::BinanceSmartChain,
+            Self::SmartChain => Chain::SmartChain,
             Self::Polygon => Chain::Polygon,
         }
     }
@@ -71,7 +71,7 @@ impl EVMChain {
     pub fn chain_id(&self) -> u64 {
         match self {
             Self::Ethereum => 1,
-            Self::BinanceSmartChain => 56,
+            Self::SmartChain => 56,
             Self::Polygon => 137,
         }
     }
@@ -79,7 +79,7 @@ impl EVMChain {
     pub fn native_symbol(&self) -> &'static str {
         match self {
             Self::Ethereum => "ETH",
-            Self::BinanceSmartChain => "BNB",
+            Self::SmartChain => "BNB",
             Self::Polygon => "MATIC",
         }
     }

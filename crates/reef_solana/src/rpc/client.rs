@@ -1,4 +1,4 @@
-use crate::models::{ResultTokenInfo, SolanaBalance, TokenAccountInfo, ValueResult};
+use crate::models::{ResultTokenInfo, SolanaBalance, TokenAccountInfoStruct, ValueResult};
 use crate::pubkey::Pubkey;
 use base64::{prelude::BASE64_STANDARD, Engine};
 use primitives::Chain;
@@ -52,7 +52,7 @@ impl SolanaClient {
         &self,
         owner: &str,
         mint: Option<&str>,
-    ) -> Result<Vec<TokenAccountInfo>, Box<dyn Error + Send + Sync>> {
+    ) -> Result<Vec<TokenAccountInfoStruct>, Box<dyn Error + Send + Sync>> {
         let params = if let Some(mint_address) = mint {
             // 获取特定代币的账户
             serde_json::json!([
@@ -77,7 +77,7 @@ impl SolanaClient {
             ])
         };
 
-        let result: ValueResult<Vec<TokenAccountInfo>> = self
+        let result: ValueResult<Vec<TokenAccountInfoStruct>> = self
             .client
             .call("getTokenAccountsByOwner", params)
             .await
@@ -142,6 +142,42 @@ impl SolanaClient {
             .map_err(|e| format!("Failed to get token mint info: {}", e))?;
 
         Ok(result)
+    }
+
+    pub async fn get_metaplex_metadata(
+        &self,
+        token_mint: &str,
+    ) -> Result<crate::metaplex::metadata::Metadata, Box<dyn Error + Send + Sync>> {
+        use crate::{
+            metaplex::decode_metadata,
+            metaplex::metadata::Metadata,
+            models::{ValueData, ValueResult},
+            pubkey::Pubkey,
+        };
+        use std::str::FromStr;
+
+        let pubkey = Pubkey::from_str(token_mint)?;
+        let metadata_key = Metadata::find_pda(pubkey)
+            .ok_or::<Box<dyn Error + Send + Sync>>("metadata program account not found".into())?
+            .0
+            .to_string();
+
+        let result: ValueResult<Option<ValueData<Vec<String>>>> = self
+            .client
+            .call(
+                "getAccountInfo",
+                serde_json::json!([
+                    metadata_key,
+                    {
+                        "encoding": "base64"
+                    }
+                ]),
+            )
+            .await?;
+
+        let value = result.value.ok_or("Failed to get metadata")?;
+        let meta = decode_metadata(&value.data[0]).map_err(|_| "Failed to decode metadata")?;
+        Ok(meta)
     }
 }
 

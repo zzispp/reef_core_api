@@ -2,7 +2,7 @@ use std::error::Error;
 
 use async_trait::async_trait;
 use primitives::ChainBalances;
-use primitives::{AssetBalance, AssetId, Balance, EVMChain};
+use primitives::{AssetBalance, Balance, EVMChain};
 
 use crate::rpc::client::EthereumClient;
 
@@ -20,7 +20,8 @@ fn map_balance_coin(
     };
 
     Ok(AssetBalance {
-        asset_id: AssetId::native(chain.to_chain()),
+        chain: chain.to_chain(),
+        contract_address: None,
         balance: Balance::coin_balance(balance_big, 18), // ETH has 18 decimals
         is_active: Some(true),
     })
@@ -58,7 +59,8 @@ impl ChainBalances for EthereumClient {
                     // Only add non-zero balances
                     if balance_big > num_bigint::BigUint::from(0u32) {
                         balances.push(AssetBalance {
-                            asset_id: AssetId::token(self.chain.to_chain(), &token_address),
+                            chain: self.chain.to_chain(),
+                            contract_address: Some(token_address),
                             balance: Balance::coin_balance(balance_big, 18), // Default to 18 decimals for ERC-20
                             is_active: Some(true),
                         });
@@ -98,8 +100,8 @@ mod tests {
 
         let result = map_balance_coin(balance_hex, chain).unwrap();
 
-        assert_eq!(result.asset_id.chain, primitives::Chain::Ethereum);
-        assert_eq!(result.asset_id.token_address, None);
+        assert_eq!(result.chain, primitives::Chain::Ethereum);
+        assert_eq!(result.contract_address, None);
         assert_eq!(result.is_active, Some(true));
         // 2 ETH = 2000000000000000000 wei
         assert_eq!(result.balance.amount, "2000000000000000000");
@@ -114,7 +116,7 @@ mod tests {
 
         let result = map_balance_coin(balance_hex, chain).unwrap();
 
-        assert_eq!(result.asset_id.chain, primitives::Chain::Ethereum);
+        assert_eq!(result.chain, primitives::Chain::Ethereum);
         assert_eq!(result.balance.amount, "1000000000000000000");
         assert_eq!(result.balance.decimals, 18);
         assert_eq!(result.balance.ui_amount, Some(1.0));
@@ -127,7 +129,7 @@ mod tests {
 
         let result = map_balance_coin(balance_hex, chain).unwrap();
 
-        assert_eq!(result.asset_id.chain, primitives::Chain::Polygon);
+        assert_eq!(result.chain, primitives::Chain::Polygon);
         assert_eq!(result.balance.amount, "0");
         assert_eq!(result.balance.decimals, 18);
         assert_eq!(result.balance.ui_amount, Some(0.0));
