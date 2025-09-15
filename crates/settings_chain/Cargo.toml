@@ -1,0 +1,17 @@
+[package]
+name = "settings_chain"
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+description = "Chain settings and providers management for Reef Core API"
+
+[dependencies]
+async-trait = "0.1.81"
+primitives = { path = "../primitives" }
+reef_evm = { path = "../reef_evm" }
+reef_solana = { path = "../reef_solana" }
+settings = { path = "../settings" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+url = { workspace = true }

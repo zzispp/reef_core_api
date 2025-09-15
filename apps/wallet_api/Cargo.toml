@@ -7,7 +7,9 @@ version = { workspace = true }
 tokio = { workspace = true }
 strum = { workspace = true }
 strum_macros = { workspace = true }
-rocket = { workspace = true }
+actix-web = { workspace = true }
+actix-rt = { workspace = true }
+anyhow = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 
@@ -16,3 +18,9 @@ settings = { path = "../../crates/settings" }
 
 # 导入Crate Reef Tracing
 reef_tracing = { path = "../../crates/reef_tracing" }
+
+# 导入Crate Primitives
+primitives = { path = "../../crates/primitives" }
+
+# Chain RPC架构相关
+settings_chain = { path = "../../crates/settings_chain" }

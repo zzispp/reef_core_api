@@ -1,0 +1,21 @@
+[package]
+name = "reef_evm"
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+description = "EVM chains support for Reef Core API"
+
+
+[dependencies]
+async-trait = "0.1.81"
+primitives = { path = "../primitives" }
+reef_client = { path = "../reef_client" }
+reef_jsonrpc = { path = "../reef_jsonrpc" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+url = { workspace = true }
+num-bigint = { workspace = true }
+hex = { workspace = true }
+anyhow = "1.0"
+thiserror = "1.0"

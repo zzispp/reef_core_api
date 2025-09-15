@@ -1,33 +1,31 @@
+mod chain;
 mod model;
+mod response;
 mod status;
 
-use std::str::FromStr;
-
+use actix_web::{middleware::Logger, web, App, HttpServer};
 use model::APIService;
 use reef_tracing::SentryTracing;
-use rocket::{fairing::AdHoc, routes, Build, Rocket};
 use settings::Settings;
+use settings_chain::ChainProviders;
+use std::str::FromStr;
+use tokio::sync::Mutex;
 
-async fn rocket_api(settings: Settings) -> Rocket<Build> {
-    let config = rocket::Config {
-        port: settings.server.port,
-        address: settings.server.address.parse().expect("Failed to parse server address"),
-        cli_colors: settings.server.rocket_log_color,
-        ..rocket::Config::default()
-    };
+async fn create_app(settings: Settings) -> std::io::Result<()> {
+    let bind_address = format!("{}:{}", settings.server.address, settings.server.port);
+    let chain_providers =
+        web::Data::new(Mutex::new(ChainProviders::from_settings(&settings).await));
 
-    rocket::custom(&config)
-        .attach(AdHoc::on_ignite(
-            "Tokio Runtime Configuration",
-            |rocket| async {
-                let runtime = tokio::runtime::Builder::new_multi_thread()
-                    .enable_all()
-                    .build()
-                    .expect("Failed to create Tokio runtime");
-                rocket.manage(runtime)
-            },
-        ))
-        .mount("/", routes![status::get_status])
+    HttpServer::new(move || {
+        App::new()
+            .app_data(chain_providers.clone())
+            .wrap(Logger::default())
+            .service(status::get_status)
+            .service(chain::balance::get_balances)
+    })
+    .bind(&bind_address)?
+    .run()
+    .await
 }
 
 #[tokio::main]
@@ -45,14 +43,14 @@ async fn main() {
 
     println!("api start service: {}", service.as_ref());
 
-    //启动Rocket API
-
-    let rocket_api = match service {
+    //启动Actix-web API
+    match service {
         APIService::WebsocketPrices => {
             // TODO 时使用 API 服务
-            rocket_api(settings).await
+            create_app(settings).await.expect("Failed to launch server");
         }
-        APIService::Api => rocket_api(settings).await,
-    };
-    rocket_api.launch().await.expect("Failed to launch Rocket");
+        APIService::Api => {
+            create_app(settings).await.expect("Failed to launch server");
+        }
+    }
 }

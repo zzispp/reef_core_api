@@ -5,7 +5,7 @@ pub struct SentryTracing {
 }
 
 impl SentryTracing {
-    pub fn init(settings: &Settings, service: &str) -> Self {
+    pub fn init(settings: &Settings, _service: &str) -> Self {
         tracing_subscriber::fmt()
             .with_target(false)
             .with_max_level(
@@ -24,7 +24,7 @@ impl SentryTracing {
 pub fn error_with_context<E: std::error::Error + ?Sized>(
     message: &str,
     error: &E,
-    context: &[(&str, &str)],
+    _context: &[(&str, &str)],
 ) {
     tracing::error!("{}: {}", message, error);
 }

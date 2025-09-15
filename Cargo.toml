@@ -10,7 +10,17 @@ documentation = "https://github.com/zzispp"
 
 [workspace]
 resolver = "2"
-members = ["apps/wallet_api", "crates/reef_tracing", "crates/settings"]
+members = [
+    "apps/wallet_api",
+    "crates/primitives",
+    "crates/reef_tracing",
+    "crates/settings",
+    "crates/reef_evm",
+    "crates/reef_solana",
+    "crates/settings_chain",
+    "crates/reef_client",
+    "crates/reef_jsonrpc",
+]
 
 default-members = ["apps/wallet_api"]
 
@@ -22,4 +32,15 @@ serde_json = { version = "1.0.143", features = ["preserve_order"] }
 config = { version = "0.15.14", features = ["yaml"] }
 strum = { version = "0.27.2", features = ["derive"] }
 strum_macros = "0.27.2"
-rocket = { version = "0.5.1", features = ["json"] }
+actix-web = { version = "4", features = ["macros"] }
+actix-rt = "2"
+anyhow = "1.0"
+typeshare = "1.0.4"
+num-bigint = { version = "0.4.6", features = ["std", "serde"] }
+reqwest = { version = "0.12.23", features = ["json"] }
+url = { version = "2.5.6" }
+async-trait = "0.1.81"
+futures = "0.3.30"
+base64 = "0.22.1"
+hex = "0.4.3"
+tracing = "0.1"
